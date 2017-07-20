@@ -1,0 +1,15 @@
+.grid-container
+  margin: 0 auto
+  width: 90%
+.grid-overlay
+  background: rgba(0,0,0,0)
+  position: absolute
+  top: 0
+  visibility: hidden
+  height: 100%
+  width: 100%
+  transition: background .2s linear
+  &.active
+    background: rgba(0,0,0,.3)
+    visibility: visible
+    z-index: 1

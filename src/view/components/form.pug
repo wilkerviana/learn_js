@@ -1,0 +1,19 @@
+include ./button.pug
+
+.form-add
+  h2 Cadastrar novo produto
+  form
+    fieldset
+      label Nome do produto
+      input(type="text" placeholder="Digite o nome do produto...")
+    fieldset
+      label Categoria do produto
+      select
+        option Bebidas
+        option Verduras
+        option Laticínios
+    fieldset
+      label Quantidade do produto
+      input(type="number" value="1")
+
+    +button('Salvar')(class='btn-save-form')

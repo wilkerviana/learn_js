@@ -63,10 +63,10 @@ window.onload = function(){
     }
   }
 
-  const button = document.getElementById('btn-form');
-  button.addEventListener('click', (event) => {
-    sandwich.make();
-  });
+  // const button = document.getElementById('btn-form');
+  // button.addEventListener('click', (event) => {
+  //   sandwich.make();
+  // });
 
   let will = 'Wilker';
 
@@ -78,5 +78,19 @@ window.onload = function(){
     }
   }
   console.log(person.hello());
-  
+
+  // Promises
+  const posts = fetch('https://willianjusten.com.br/search.json');
+  posts
+    .then(data => data.json())
+    .then(data => data.map(post => {
+      // console.log(post.title);
+  }));
+
+  var itemDigitado = document.getElementById('main-item');
+  const button = document.getElementById('btn-form');
+  button.addEventListener('click', (event) => {
+    var produto = itemDigitado.value;
+    document.body.innerHTML = produto;
+  });
 }

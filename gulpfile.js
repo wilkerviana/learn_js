@@ -1,12 +1,11 @@
 'use strict';
 
-var gulp = require('gulp'),
+const gulp = require('gulp'),
 	view = require('gulp-pug'),
 	style = require('gulp-stylus'),
-  copy = require('gulp-copy'),
-  clean = require('gulp-clean'),
   plumber = require('gulp-plumber'),
-	watch = require('gulp-watch'),
+  watch = require('gulp-watch'),
+  image = require('gulp-imagemin'),
   jshint = require('gulp-jshint'),
 	browserSync = require('browser-sync');
 
@@ -35,14 +34,17 @@ gulp.task('browserSync',function(){
         .pipe(view({
           pretty: true
         }))
-        .pipe(gulp.dest('dist/')); 
+        .pipe(gulp.dest('dist/'));
 
-    gulp.src('src/script/*.js')
+    gulp.src('src/images/**/*')
+        .pipe(image())
+        .pipe(gulp.dest('dist/images'));
+
+    gulp.src('src/script/**/*.js')
       .pipe(jshint())
-      .pipe(gulp.dest('dist/js'));
-    });
-
-	  gulp.watch('dist/**/*').on('change', browserSync.reload);
+      .pipe(gulp.dest('dist/js/'));
+  });
+	gulp.watch('dist/**/*').on('change', browserSync.reload);
 });
 
 // default task on gulp

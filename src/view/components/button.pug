@@ -1,0 +1,6 @@
+mixin button(text)
+  button.btn&attributes(attributes)
+    if (text)
+      span.text!=text
+    else if block
+      block

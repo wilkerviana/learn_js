@@ -1,28 +1,11 @@
-doctype html
-html
-  head
-    meta(charset="UTF-8")
-    meta(name="viewport" content="width=device-width,initial-scale=1")
-    link(rel="stylesheet" href="css/index.css")
+extends ./layout/structure.pug
 
-    title Wishlist
+include ./components/button.pug
 
-    script(src="js/index.js")
-  body
-    header
-      .grid-container
-        .grid-row
-          h1.title_default Lista de Compras
-          h2.subtitle_default Julho
-          form#new-item
-            fieldset.input-box_name
-              label Digite seu produto
-              input(type="text")
-            fieldset.input-box_info
-              label Quantidade
-              select#quantity(name="Quantidade")
-                option 1
-              label Categoria
-              select#category(name="Categoria")
-            button#btn-form.btn.btn-form_check(type="submit") Ok!
-                        
+block content
+  #overlay.grid-overlay
+  include ./components/item.pug
+  include ./components/form.pug
+  +button(class="btn-add" id="btn-add-form")
+    img(src="images/icons/add.png")
+  

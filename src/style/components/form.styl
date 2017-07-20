@@ -1,0 +1,27 @@
+.form-add
+  background: #ffffff
+  border-radius: 15px
+  position: absolute
+  transition: top .6s ease-in-out
+  top: -500px
+  left: calc(50% - 260px/2)
+  width: 260px
+  height: 370px
+  padding: 20px 30px
+  z-index: 2
+  &.active
+    top: calc(50% - 370px/2)
+  form
+    margin: 0
+    h2
+      font-size: 1.2em
+    fieldset
+      border: none
+    input
+      border: 1px solid #a9a9a9
+      border-radius: 6px
+      padding: 6px
+      width: 100%
+    select
+      border: 1px solid #a9a9a9
+      width: 100%
