@@ -7,45 +7,64 @@ const gulp = require('gulp'),
   watch = require('gulp-watch'),
   image = require('gulp-imagemin'),
   jshint = require('gulp-jshint'),
-	browserSync = require('browser-sync');
+  browserSync = require('browser-sync').create(),
+  webpack = require('webpack-stream');
 
-// Gulp tasks
-gulp.task('browserSync',function(){
+gulp.task('browserSync', ['build'], function(){
 	browserSync.init({
 		server:{
 			baseDir: 'dist'
 		}
-	});
-	// watch files on Browsersync
-	gulp.watch('src/**/*').on('change', function(event){
-    gulp.src('src/style/*.styl')
-        .pipe(plumber({
-          handleError: function(error) {
-            console.log(error);
-            this.emit('end');
-          }
-        }))
-        .pipe(style({
-          compress: true
-        }))
-        .pipe(gulp.dest('dist/css'));
-
-    gulp.src('src/view/*.pug')
-        .pipe(view({
-          pretty: true
-        }))
-        .pipe(gulp.dest('dist/'));
-
-    gulp.src('src/images/**/*')
-        .pipe(image())
-        .pipe(gulp.dest('dist/images'));
-
-    gulp.src('src/script/**/*.js')
-      .pipe(jshint())
-      .pipe(gulp.dest('dist/js/'));
   });
-	gulp.watch('dist/**/*').on('change', browserSync.reload);
+
+	gulp.watch('src/**/*.js', ['script']);
+	gulp.watch('src/images/**/*', ['image']);
+	gulp.watch('src/**/*.styl', ['style']);
+  gulp.watch('src/**/*.pug', ['view']);
+  gulp.watch('dist/**/*').on('change', () => {
+    browserSync.reload();
+  });
 });
+
+gulp.task('style', () => {
+  gulp.src('src/style/*.styl')
+    .pipe(plumber({
+      handleError: function(error) {
+        console.log(error);
+        this.emit('end');
+      }
+    }))
+    .pipe(style({
+      compress: true
+    }))
+    .pipe(gulp.dest('dist/css'));
+});
+
+gulp.task('view', () => {
+  gulp.src('src/view/*.pug')
+    .pipe(view({
+      pretty: true
+    }))
+    .pipe(gulp.dest('dist/'));
+});
+
+gulp.task('image', () => {
+  gulp.src('src/images/**/*')
+    .pipe(image())
+    .pipe(gulp.dest('dist/images'));
+});
+
+gulp.task('script', () => {
+  gulp.src('src/script/index.js')
+    .pipe(webpack({
+      output: {
+        filename: '[name].js'
+      }
+    }))
+    .pipe(gulp.dest('dist/js'))
+});
+
+gulp.task('build', ['image', 'script', 'style', 'view']);
 
 // default task on gulp
 gulp.task('default',['browserSync']);

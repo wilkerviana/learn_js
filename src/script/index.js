@@ -1,96 +1,47 @@
+const database = require('./lib/database.js');
+const { load: loadProducts } = require('./lib/products.js');
 
-  // -> scope 2017
-  var nbaChampions = 'Golden State Warriors';
-  console.log(nbaChampions);
+// database.ref('/version/').once('value')
+//   .then(function (snapshot) {
+//     console.log(snapshot.val())
+//   })
+//   .catch(function (error) {
+//     console.error(error);
+//   });
 
-  // let - variable scope -> scope 2016
-  {
-    let nbaChampions = 'Cleveland Cavaliers';
-    console.log(nbaChampions);
-  }
+// database.ref('/version/').set(2);
 
-  // const variable unchanging but properties of your object can be changed
-  const mvp = {
-    okc: 'Russell Westbrook',
-    spurs: 'Kawaii Leonard',
-    rockets: 'James Harden'
-  } 
-    // What's your MVP?
-  console.log(mvp.spurs)
-  mvp.spurs = 'Tony Parker';
-  console.log(mvp.spurs)
+window.addEventListener('load', () => {
+  loadProducts();
 
-  // temporal dead zone -> just var hoisted
-  console.log(myTeam);
-  var myTeam = 'Los Angeles Lakers'
+  const form = document.querySelector('.form-add'),
+        overlay = document.getElementById('overlay'),
+        btnSave = document.querySelector('.btn-save-form'),
+        btnAdd = document.getElementById('btn-add-form');
+  
+  const hide = () => {
+    overlay.classList.remove('active');
+    form.classList.remove('active');
+  };
 
-  const teamsNba = ['Los Angeles Lakers','Chicago Bulls','Cleveland Cavaliers'];
+  btnAdd.addEventListener('click', () => {
+    form.classList.toggle('active');
 
-  // ES5
-  const myFavorites2 = teamsNba.filter(function(name){
-    return name === 'Chicago Bulls';
-  }).map(function(name){
-    return `Michael Jordan is ${name}`;
+    if (form.classList.contains('active'))
+      overlay.classList.toggle('active');
   });
-  
-  // ES6 
-  const myFavorites = teamsNba
-                        .filter(name => name === 'Los Angeles Lakers')
-                        .map(name => `My team is ${name}`);
-  
-  console.log(myFavorites);
 
+  overlay.addEventListener('click', hide);
 
-window.onload = function(){
-  // events ES5
-  const btn = document.getElementById('btn-form');
-  btn.addEventListener('click',function(event){
+  btnSave.addEventListener('click', event => {
     event.preventDefault();
-    console.log(this);
+
+    const name = document.querySelector('[data-id="product-name"]').value,
+          category = document.querySelector('[data-id="product-category"]').value,
+          quantity = document.querySelector('[data-id="product-quantity"]').value;
+    
+    database.ref('/products/').push({name, category, quantity});
+
+    hide();
   });
-  
-  // lexical this
-  const sandwich = {
-    bread: 'australian',
-    cheese: 'cheddar',
-
-    prepare:function(){
-      return `I want a sandwich with ${this.bread} bread and ${this.cheese} cheese!`;
-    },
-
-    make: function(){
-      console.log(this.prepare());
-    }
-  }
-
-  // const button = document.getElementById('btn-form');
-  // button.addEventListener('click', (event) => {
-  //   sandwich.make();
-  // });
-
-  let will = 'Wilker';
-
-  const person = {
-    will,
-
-    hello: function(){
-      console.log(`My name is ${will}`);
-    }
-  }
-  console.log(person.hello());
-
-  // Promises
-  const posts = fetch('https://willianjusten.com.br/search.json');
-  posts
-    .then(data => data.json())
-    .then(data => data.map(post => {
-      // console.log(post.title);
-  }));
-
-  var itemDigitado = document.getElementById('main-item');
-  const button = document.getElementById('btn-form');
-  button.addEventListener('click', (event) => {
-    var produto = itemDigitado.value;
-    document.body.innerHTML = produto;
-  });
-}
+});

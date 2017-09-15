@@ -5,15 +5,15 @@ include ./button.pug
   form
     fieldset
       label Nome do produto
-      input(type="text" placeholder="Digite o nome do produto...")
+      input(type="text" placeholder="Digite o nome do produto..." data-id="product-name")
     fieldset
       label Categoria do produto
-      select
+      select(data-id="product-category")
         option Bebidas
         option Verduras
         option Laticínios
     fieldset
       label Quantidade do produto
-      input(type="number" value="1")
+      input(type="number" value="1" data-id="product-quantity")
 
     +button('Salvar')(class='btn-save-form')
